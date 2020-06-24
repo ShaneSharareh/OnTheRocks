@@ -1,0 +1,18 @@
+{
+  "name": "cocktail-reciepe-finder",
+  "version": "1.0.0",
+  "description": "Cocktail Reciepe finder",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "rollup": "^2.15.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.43.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shane Sharareh",
+  "license": "ISC"
+}
