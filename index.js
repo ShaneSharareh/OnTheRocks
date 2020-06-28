@@ -193,9 +193,18 @@ const SearchModel = (function() {
 
     async scrapeResults() {
       try {
-        const result = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${this.query}`);
+        let result;
+        if(document.querySelector('.search_type_selection').value==='drink'){
+         result = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${this.query}`);
+        }
+        else{
+          result = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${this.query}`);
+
+        }
         this.results = await result.json();
         console.log(this.results);
+
+
       } catch (error) {
         alert("error processing drinks")
       }
@@ -537,6 +546,8 @@ const controller = (function() {
    */
   const inputQuery = async () => {
     //1) retrieve query from view
+
+    console.log(document.querySelector('.search_type_selection').value);
     const query = searchView.getUserInput();
     console.log(query);
     if (query) {

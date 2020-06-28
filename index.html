@@ -16,10 +16,17 @@
 <body>
   <div class="container">
     <div class="header">
+      <div class ="logo">
+        <img src = "img/logoc.png" alt="logo">
+      </div>
       <div class="search">
         <form class="search_form">
+          <select name="search_type" class="search_type_selection">
+            <option value = "drink">Drink</option>
+            <option value = "ingredient">Ingredient</option>
+          </select> 
           <input type="text" class="search_field" placeholder="Search for a drink..">
-          <button type="search_btn" name="button">
+          <button class="search_btn" name="button">
             <h4>Search</h4>
           </button>
         </form>
