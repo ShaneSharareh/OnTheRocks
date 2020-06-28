@@ -237,7 +237,9 @@ const DOMElements = (function() {
         recipe: document.querySelector('.recipe'),
         shopping: document.querySelector('.shopping_list'),
         likesMenu: document.querySelector('.likes__field'),
-        likesList: document.querySelector('.likes__list')
+        likesList: document.querySelector('.likes__list'),
+        searchType: document.querySelector('.search_type_selection')
+
 
 
       }
@@ -481,6 +483,8 @@ const shoppingListView = (function() {
             </div>
             <p class="shopping__description">${item.ingredient}</p>
             <i class="shopping__delete fa fa-trash-o" style=" font-size:20px">
+            
+
             </i>
         </li>
 
@@ -584,6 +588,17 @@ const controller = (function() {
       searchView.renderResults(state.search.results.drinks, goToPage)
     }
   });
+//change search place holder depending on search type
+  DOMElements.getInput().searchType.addEventListener('change', event=>{
+
+
+    if(DOMElements.getInput().searchType.value ==="drink"){
+      DOMElements.getInput().searchInput.placeholder = "Search for a drink..";
+    }
+    else{
+      DOMElements.getInput().searchInput.placeholder = "Search for a ingredient..";
+    }
+  });
 
   DOMElements.getInput().recipe.addEventListener('click', event => {
     if (event.target.matches('.btn-decrease, .btn-decrease *')) {
@@ -660,6 +675,12 @@ const controlShoppingList = ()=> {
     else if(event.target.matches('.shopping__count-value')){
       const newCount = parseFloat(event.target.value)
       state.shoppinglist.updateCount(id, newCount)
+    }
+
+    else if(event.target.matches('.fa fa-search')){
+      const newQuery = event.target.value
+      DOMElements.getInput().searchInput.value = newQuery;
+      state.search.scrapeResults();
     }
 
   })
