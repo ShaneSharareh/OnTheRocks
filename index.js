@@ -49,7 +49,7 @@ class Recipe {
   }
 
   parseIngredients() {
-    const units = ['tbsp', 'oz', 'tsp', 'cup', 'dashes', 'twist of', 'cl', 'ml', 'spoons']
+    const units = ['tbsp', 'oz', 'tsp', 'cup', 'dashes','dash', 'twist of', 'cl', 'ml', 'spoons']
     const newIngredients = this.ingredients.map(ingredient => {
 
       //split ingredients into the count, unit and the ingredient itself
@@ -133,29 +133,34 @@ class ShoppingList {
 
   }
 
+  getIngredient(id){
+    const index = this.items.findIndex(currentItem => currentItem.id === id)
+    return this.items[index].ingredient;
+  }
+
   updateCount(id, newCount) {
     this.items.find(currentItem => currentItem.id === id).count = newCount;
   }
 }
 
 
-//Likes class
-class LikesList{
+//favorites class
+class favoritesList{
   constructor(){
-    this.likes = [];
+    this.favorites = [];
   }
 
-  addLikes(id, title, image){
+  addfavorites(id, title, image){
     const like = {id, title, image}
-    this.likes.push(like)
+    this.favorites.push(like)
     //save in local data storage
     this.saveInLocalStorage()
     return like;
 }
 
-  deleteLikes(id){
-    const index = this.likes.findIndex(currentLike => currentLike.id === id)
-    this.likes.splice(index, 1);
+  deletefavorites(id){
+    const index = this.favorites.findIndex(currentLike => currentLike.id === id)
+    this.favorites.splice(index, 1);
 
     // save data in local storage
     this.saveInLocalStorage()
@@ -163,21 +168,21 @@ class LikesList{
 
   isLiked(id){
 
-    return this.likes.findIndex(currentLike => currentLike.id==id) !== -1;
+    return this.favorites.findIndex(currentLike => currentLike.id==id) !== -1;
   }
 
-  getLikesLength(){
-    return this.likes.length
+  getfavoritesLength(){
+    return this.favorites.length
   }
 
   saveInLocalStorage(){
-    localStorage.setItem('likes',JSON.stringify(this.likes))
+    localStorage.setItem('favorites',JSON.stringify(this.favorites))
   }
 
   readLocalStorage(){
-    const storage = JSON.parse(localStorage.getItem('likes'));
+    const storage = JSON.parse(localStorage.getItem('favorites'));
     if(storage)
-      this.likes = storage
+      this.favorites = storage
   }
 
 
@@ -236,9 +241,10 @@ const DOMElements = (function() {
         searchResultsPages: document.querySelector('.results__pages'),
         recipe: document.querySelector('.recipe'),
         shopping: document.querySelector('.shopping_list'),
-        likesMenu: document.querySelector('.likes__field'),
-        likesList: document.querySelector('.likes__list'),
-        searchType: document.querySelector('.search_type_selection')
+        favoritesMenu: document.querySelector('.favorites_field'),
+        favoritesList: document.querySelector('.favorites_list'),
+        searchType: document.querySelector('.search_type_selection'),
+        shopping_search_btn: document.querySelector('.shopping_search')
 
 
 
@@ -401,7 +407,7 @@ const recipeView = (function() {
     renderRecipe: (recipe,isLiked) => {
       const markup = `<figure class="recipe__fig">
         <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img">
-        <h1 class="recipe__title">
+        <h1 class="recipe_title">
             <span>${recipe.title}</span>
         </h1>
     </figure>
@@ -417,11 +423,11 @@ const recipeView = (function() {
             <span class="recipe__info-text"> servings</span>
 
             <div class="recipe__info-buttons">
-                <button class="btn-tiny btn-decrease">
-                        <h3>-</h3>
+                <button class="btn-decrease">
+                        <h2>-</h2>
                 </button>
-                <button class="btn-tiny btn-increase">
-                <h3>+</h3>
+                <button class="btn-increase">
+                <h2>+</h2>
 
                 </button>
             </div>
@@ -443,7 +449,7 @@ const recipeView = (function() {
         </ul>
 
         <button class="btn-small recipe__btn recipe__btn--add">
-            <span>Add to shopping list</span>
+            <span>ADD TO SHOPPING LIST</span>
         </button>
     </div>
 
@@ -482,8 +488,11 @@ const shoppingListView = (function() {
                 <p>${item.unit}</p>
             </div>
             <p class="shopping__description">${item.ingredient}</p>
-            <i class="shopping__delete fa fa-trash-o" style=" font-size:20px">
-            
+            <button class="shopping_delete fa fa-trash-o" style=" font-size:20px"></button>
+
+            <button class="shopping_search fa fa-search" style=" font-size:20px"></button>
+
+
 
             </i>
         </li>
@@ -500,7 +509,7 @@ const shoppingListView = (function() {
   }
 })();
 
-const likesView = (function(){
+const favoritesView = (function(){
   return{
     toggleLikeButton: isLiked=>{
       const likeIcon = isLiked? `<i class="material-icons is-liked bouncy">favorite</i>`: `    <i class="material-icons not-liked bouncy">favorite_border</i>
@@ -508,28 +517,28 @@ const likesView = (function(){
       document.querySelector('.recipe__love').innerHTML = likeIcon;
     },
 
-    toggleLikeMenu: likesSize =>{
-      DOMElements.getInput().likesMenu.style.visibility = likesSize>0 ? 'visible': 'hidden';
+    toggleLikeMenu: favoritesSize =>{
+      DOMElements.getInput().favoritesMenu.style.visibility = favoritesSize>0 ? 'visible': 'hidden';
     },
 
-    displayLikesList: like=>{
+    displayfavoritesList: like=>{
       const markup = `<li>
-          <a class="likes__link" href="#${like.id}">
-              <figure class="likes__fig">
+          <a class="favorites_link" href="#${like.id}">
+              <figure class="favorites_fig">
                   <img src="${like.image}" alt="Test">
               </figure>
-              <div class="likes__data">
-                  <h4 class="likes__name">${like.title}</h4>
+              <div class="favorites_data">
+                  <h4 class="favorites_name">${like.title}</h4>
               </div>
           </a>
       </li>`;
 
 
-    DOMElements.getInput().likesList.insertAdjacentHTML('beforeend', markup);
+    DOMElements.getInput().favoritesList.insertAdjacentHTML('beforeend', markup);
   },
 
   deleteLike: id=>{
-    const likeElement = document.querySelector(`.likes__link[href*="${id}"]`).parentElement;
+    const likeElement = document.querySelector(`.favorites_link[href*="${id}"]`).parentElement;
     if(likeElement)
       likeElement.parentElement.removeChild(likeElement)
   }
@@ -596,9 +605,15 @@ const controller = (function() {
       DOMElements.getInput().searchInput.placeholder = "Search for a drink..";
     }
     else{
-      DOMElements.getInput().searchInput.placeholder = "Search for a ingredient..";
+      DOMElements.getInput().searchInput.placeholder = "Search for a drink by ingredient..";
     }
   });
+
+  /*DOMElements.getInput().shopping_search_btn.addEventListener('click', event=> async function(){
+    const newIngredient= state.shoppinglist.getIngredient(id);
+    DOMElements.getInput().searchInput.value = newIngredient;
+    await state.search.scrapeResults();
+  });*/
 
   DOMElements.getInput().recipe.addEventListener('click', event => {
     if (event.target.matches('.btn-decrease, .btn-decrease *')) {
@@ -612,7 +627,7 @@ const controller = (function() {
     } else if (event.target.matches('.recipe__btn--add, .recipe__btn--add *')){
       controlShoppingList();
     } else if(event.target.matches('.recipe__love, .recipe__love *')){
-      likesController();
+      favoritesController();
     }
   });
   //recipe controller
@@ -640,7 +655,7 @@ const controller = (function() {
         //render recipes
         console.log(state.recipe)
         recipeView.renderRecipe(state.recipe,
-                                state.likes.isLiked(id));
+                                state.favorites.isLiked(id));
 
       } catch (error) {
         alert("Error extracting recipe")
@@ -650,9 +665,18 @@ const controller = (function() {
 
   ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
+const searchIngredient = async newId =>{
+  DOMElements.getInput().searchType.value="ingredient";
+  const newIngredient= state.shoppinglist.getIngredient(newId);
+  DOMElements.getInput().searchInput.value = newIngredient;
+  inputQuery();
+  DOMElements.getInput().searchInput.value = newIngredient;
+
+}
 
 //Shopping List Controller
 const controlShoppingList = ()=> {
+
   //create a new list if null
   if(!state.shoppinglist) state.shoppinglist = new ShoppingList();
 
@@ -663,10 +687,10 @@ const controlShoppingList = ()=> {
   });
 
   //Handle delete and update list item events
-  DOMElements.getInput().shopping.addEventListener('click', event=>{
+    DOMElements.getInput().shopping.addEventListener('click', event=>{
     const id = event.target.closest('.shopping__item').dataset.itemid;
     //handle delete method
-    if(event.target.matches('.shopping__delete, .shopping__delete *')){
+    if(event.target.matches('.shopping_delete, .shopping_delete *')){
       //delete item from state
       state.shoppinglist.deleteItem(id);
       //delete item from user interface
@@ -677,57 +701,57 @@ const controlShoppingList = ()=> {
       state.shoppinglist.updateCount(id, newCount)
     }
 
-    else if(event.target.matches('.fa fa-search')){
-      const newQuery = event.target.value
-      DOMElements.getInput().searchInput.value = newQuery;
-      state.search.scrapeResults();
+    else if(event.target.matches('.shopping_search, .shopping_search *')){
+      //alert(event.target.value);
+      searchIngredient(id);
+
     }
 
   })
 }
 
 
-// Likes Controller
-const likesController = ()=>{
-  if(!state.likes) state.likes = new LikesList();
+// favorites Controller
+const favoritesController = ()=>{
+  if(!state.favorites) state.favorites = new favoritesList();
   const currentId = state.recipe.id;
 
-  if(!state.likes.isLiked(currentId)){
+  if(!state.favorites.isLiked(currentId)){
     //if user hasnt liked the recipe
-    const newLike = state.likes.addLikes(
+    const newLike = state.favorites.addfavorites(
       currentId,
       state.recipe.title,
       state.recipe.image
     );
 
     //toggle like button
-    likesView.toggleLikeButton(true);
+    favoritesView.toggleLikeButton(true);
 
     //add it to the UI list
-    likesView.displayLikesList(newLike)
-    console.log(state.likes)
+    favoritesView.displayfavoritesList(newLike)
+    console.log(state.favorites)
 
   }else{
     //remove like from state
-    state.likes.deleteLikes(currentId);
+    state.favorites.deletefavorites(currentId);
 
     //toggle the like button
-    likesView.toggleLikeButton(false);
+    favoritesView.toggleLikeButton(false);
 
 
     // remove the ui list
-    likesView.deleteLike(currentId);
-    console.log(state.likes)
+    favoritesView.deleteLike(currentId);
+    console.log(state.favorites)
   }
-  likesView.toggleLikeMenu(state.likes.getLikesLength())
+  favoritesView.toggleLikeMenu(state.favorites.getfavoritesLength())
 }
 
 //restore liked recipes on load
 window.addEventListener('load', ()=>{
-  state.likes = new LikesList();
-  state.likes.readLocalStorage();
-  likesView.toggleLikeMenu(state.likes.getLikesLength());
-  state.likes.likes.forEach(like => likesView.displayLikesList(like));
+  state.favorites = new favoritesList();
+  state.favorites.readLocalStorage();
+  favoritesView.toggleLikeMenu(state.favorites.getfavoritesLength());
+  state.favorites.favorites.forEach(like => favoritesView.displayfavoritesList(like));
 
 })
 

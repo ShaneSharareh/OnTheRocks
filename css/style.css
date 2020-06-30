@@ -68,21 +68,29 @@ html {
 .search {
   border-radius: 10rem;
   display: flex;
+  padding: 2rem;
   align-items: center;
-  margin-right: 25rem;
+  margin-right: 10rem;
   transition: all .3s; }
 
   .search_type_selection{
     margin-right: 6px;
   }
-
+  .recipe_title{
+    color: #F59A83;
+    text-align: center;
+    font-family: fantasy;
+    font-style: bold;
+    margin-top: 10px;
+    font-size: 30px;
+  }
   .search_btn{
+    color: #FFFFFF;
     border-radius: 50%;
     padding: 10px;
     cursor: pointer;
-    margin-left: 5px;
-    background-color: rgb(255,127,80);
-    color: #FFFFFF;
+    margin: 3px;
+    background-image: linear-gradient(to right bottom, rgb(255,127,80), #F48982);
 
   }
 
@@ -97,28 +105,43 @@ html {
     .search__field::placeholder {
       color: #DAD0CC; }
 
-.likes {
+.favorites_btn{
+height: 20px;
+font-style: italic;
+weight: 3px;
+  font-size: 13px;
+  line-height: 1px;
+  text-align: center;
+  border-radius: 50%;
+padding: 10px;
+cursor: pointer;
+background-image: linear-gradient(to right bottom, rgb(255,127,80), #F48982);
+color: #FFFFFF;
+
+}
+
+.favorites {
   position: relative;
   align-self: stretch;
   padding: 0 !important; }
-  .likes__field {
+  .favorites_field {
     cursor: pointer;
     padding: 0 4rem;
     display: flex;
     align-items: center;
     height: 100%;
     transition: all .3s; }
-    .likes__field:hover {
+    .favorites_field:hover {
       background-color: #F2EFEE; }
-  .likes__panel:hover,
-  .likes__field:hover + .likes__panel {
+  .favorites_panel:hover,
+  .favorites_field:hover + .favorites_panel {
     visibility: visible;
     opacity: 1; }
-  .likes__icon {
+  .favorites_icon {
     fill: #F59A83;
     height: 3.75rem;
     width: 3.75rem; }
-  .likes__panel {
+  .favorites_panel {
     position: absolute;
     right: 0;
     top: 10rem;
@@ -132,14 +155,14 @@ html {
     transition: all .5s .2s; }
 
 .results,
-.likes {
-  padding: 3rem 0; }
+.favorites {
+  padding: 1rem 0; }
   .results__list,
-  .likes__list {
+  .favorites_list {
     list-style: none; }
   .results__link:link, .results__link:visited,
-  .likes__link:link,
-  .likes__link:visited {
+  .favorites_link:link,
+  .favorites_link:visited {
     display: flex;
     align-items: center;
     padding: 1.5rem 3rem;
@@ -147,14 +170,14 @@ html {
     border-right: 1px solid #fff;
     text-decoration: none; }
   .results__link:hover,
-  .likes__link:hover {
+  .favorites_link:hover {
     background-color: #F9F5F3;
     transform: translateY(-2px); }
   .results__link--active,
-  .likes__link--active {
+  .favorites_link--active {
     background-color: #F9F5F3; }
   .results__fig,
-  .likes__fig {
+  .favorites_fig {
     flex: 0 0 5.5rem;
     border-radius: 50%;
     overflow: hidden;
@@ -163,7 +186,7 @@ html {
     position: relative;
     backface-visibility: hidden; }
     .results__fig::before,
-    .likes__fig::before {
+    .favorites_fig::before {
       content: '';
       display: block;
       height: 100%;
@@ -174,40 +197,40 @@ html {
       background-image: linear-gradient(to right bottom, #FBDB89, #F48982);
       opacity: .4; }
     .results__fig img,
-    .likes__fig img {
+    .favorites_fig img {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: all .3s; }
   .results__name,
-  .likes__name {
+  .favorites_name {
     font-size: 1.3rem;
     color: #F59A83;
     text-transform: uppercase;
     font-weight: 600;
     margin-bottom: .3rem; }
   .results__author,
-  .likes__author {
+  .favorites_author {
     font-size: 1.1rem;
     color: #968B87;
     text-transform: uppercase;
     font-weight: 600; }
   .results__pages,
-  .likes__pages {
+  .favorites_pages {
     margin-top: 3rem;
     padding: 0 3rem; }
     .results__pages::after,
-    .likes__pages::after {
+    .favorites_pages::after {
       content: "";
       display: table;
       clear: both; }
   .results__btn--prev,
-  .likes__btn--prev {
+  .favorites_btn--prev {
     float: left;
     flex-direction: row-reverse; }
   .results__btn--next,
-  .likes__btn--next {
+  .favorites_btn--next {
     float: right; }
 
 .recipe {
@@ -260,12 +283,27 @@ html {
     opacity: 0;
     transform: translateY(5px);
     transition: all .4s; }
+    .btn-increase, .btn-decrease {
+      width: 3px;
+      height: 3px;
+      font-size: 10px;
+      line-height: 1px;
+      text-align: center;
+      border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    margin-left: 5px;
+    background-image: linear-gradient(to right bottom, rgb(255,127,80), #F48982);
+    color: #F0E68C;
+
+    }
   .recipe:hover .recipe__info-buttons {
     visibility: visible;
     opacity: 1;
     transform: translateY(0); }
   .recipe__love {
-    background-image: linear-gradient(to right bottom, #FBDB89, #F48982);
+    color: red;
+    background-image: linear-gradient(to right bottom, rgb(255,127,80), #F48982);
     border-radius: 50%;
     border: none;
     cursor: pointer;
@@ -320,6 +358,16 @@ html {
   .recipe__by {
     font-weight: 700; }
 
+  .recipe__btn--add{
+    color: #FFFFFF;
+    padding: 10px;
+    cursor: pointer;
+    margin: 3px;
+    background-image: linear-gradient(to right bottom, rgb(255,127,80), #F48982);
+    font-style: italic;
+    border: 0px;
+  }
+
 .shopping {
   padding: 3rem 4rem;
   display: flex;
@@ -361,16 +409,21 @@ html {
     font-size: 1.3rem;
     margin-top: .4rem;
     margin-right: 1.5rem; }
-  .shopping__delete {
-    margin: .5rem;
-    position: absolute;
-    right: 0;
-    background-image: linear-gradient(to right, transparent 0%, #fff 40%, #fff 100%);
-    width: 3.75rem;
-    padding-left: 2rem;
+  .shopping_delete, .shopping_search {
+    cursor: pointer;
     visibility: hidden;
     opacity: 0;
-    transition: all .5s; }
-  .shopping__item:hover .shopping__delete {
+    transition: all .5s;
+    margin: 5px;
+    outline: none;
+    border: none;
+    background-color: transparent;
+  }
+  .shopping__item:hover .shopping_delete {
     opacity: 1;
-    visibility: visible; }
+    visibility: visible;
+    }
+
+    .shopping__item:hover .shopping_search {
+      opacity: 1;
+      visibility: visible; }
